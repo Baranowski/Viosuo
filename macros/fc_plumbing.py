@@ -24,13 +24,13 @@ Y_AXIS = Constant(-2)
 
 
 class Sketch(object):
-    def __init__(self, name, body, support):
+    def __init__(self, name, body, support, mapMode='FlatFace'):
         self.name = name
         self.external_counter = -2
         print(body)
         self.sketch = body.newObject('Sketcher::SketchObject', name)
         self.sketch.Support = support
-        self.sketch.MapMode = 'FlatFace'
+        self.sketch.MapMode = mapMode
 
     def addG(self, geometry, construction, constraints=[]):
         handle = self.sketch.addGeometry(geometry, construction)
@@ -84,3 +84,4 @@ Equal = Constraint('Equal')
 PointOnObject = Constraint('PointOnObject')
 Perpendicular = Constraint('Perpendicular')
 Parallel = Constraint('Parallel')
+Symmetric = Constraint('Symmetric')

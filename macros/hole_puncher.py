@@ -19,89 +19,58 @@ def findEdgeIdx(needle, haystack):
     return result
 
 
+def findVertexIdx(needle, haystack):
+    result = 0
+    while needle.X != haystack[result].X or \
+            needle.Y != haystack[result].Y or \
+            needle.Z != haystack[result].Z:
+        result += 1
+    return result
+
+
 class SwitchHole(fcp.Sketch):
-    def __init__(self, body, support, face):
+    def __init__(self, body, face):
         global holeIdx
         holeIdx += 1
-        super().__init__('SwitchHole' + str(holeIdx), body, support)
-        # Pick the edge that's opposite of face.Edges[0]
-        secondFaceEdgeIdx = 1
-        while face.Edges[0].distToShape(face.Edges[secondFaceEdgeIdx]) == 0:
-            secondFaceEdgeIdx += 1
-        # Find indexes of the two opposing face edges in the list of edges of
-        # the entire body
-        externalIdxs = [findEdgeIdx(face.Edges[0], body.Shape.Edges),
-                        findEdgeIdx(face.Edges[secondFaceEdgeIdx], body.Shape.Edges)]
-
-        # Let's carefully choose which of the endpoints in the second external
-        # edge we are going to use for constraints. We want to pick the one
-        # that's farthest from the starting point of the first edge. I.e., we
-        # want to make sure that the external vertices we are going to use in
-        # constraints lie on a diagonal of the rectangle that's the wire of the
-        # face in which we are punching a hole
-        firstEdgeStartPoint = face.Edges[0].firstVertex()
-        secondEdgeStartPoint = face.Edges[secondFaceEdgeIdx].firstVertex()
-        secondEdgeEndPoint = face.Edges[secondFaceEdgeIdx].lastVertex()
-        secondFaceEdgeVertexSel = fcp.START_POINT
-        if firstEdgeStartPoint.distToShape(secondEdgeEndPoint) > firstEdgeStartPoint.distToShape(secondEdgeStartPoint):
-            secondFaceEdgeVertexSel = fcp.END_POINT
-
-        # Import them
-        externals = [self.addE(body, 'Edge' + str(i + 1))
-                     for i in externalIdxs]
+        support = [(body.Tip, 'Vertex' + str(vIdx + 1)) for vIdx in
+                   [findVertexIdx(faceVertex, body.Shape.Vertexes)
+                    for faceVertex in face.Vertexes]
+                   ]
+        super().__init__('SwitchHole' + str(holeIdx), body, support, 'InertialCS')
         e1 = self.addG(
-            fcp.Line(-100, -100, 100, -100),
-            construction=False)
-        e2 = self.addG(
-            fcp.Line(100, -100, 100, 100),
+            fcp.Line(-1, -1, -1, 1),
             construction=False,
             constraints=[
+                fcp.Vertical(fcp.CURRENT)
+            ])
+        e2 = self.addG(
+            fcp.Line(-1, 1, 1, 1),
+            construction=False,
+            constraints=[
+                fcp.Horizontal(fcp.CURRENT),
                 fcp.Coincident(e1, fcp.END_POINT,
                                fcp.CURRENT, fcp.START_POINT),
-                fcp.Perpendicular(e1, fcp.CURRENT),
-                fcp.Equal(e1, fcp.CURRENT)
             ])
         e3 = self.addG(
-            fcp.Line(100, 100, -100, 100),
+            fcp.Line(1, 1, 1, -1),
             construction=False,
             constraints=[
-                fcp.Coincident(e2, fcp.END_POINT,
-                               fcp.CURRENT, fcp.START_POINT),
-                fcp.Perpendicular(e2, fcp.CURRENT),
-                fcp.Equal(e2, fcp.CURRENT)
+                fcp.Vertical(fcp.CURRENT),
+                fcp.Coincident(e2, fcp.END_POINT, fcp.CURRENT, fcp.START_POINT)
             ])
         e4 = self.addG(
-            fcp.Line(-100, 100, -100, -100),
+            fcp.Line(1, -1, -1, -1),
             construction=False,
             constraints=[
+                fcp.Horizontal(fcp.CURRENT),
                 fcp.Coincident(e3, fcp.END_POINT,
                                fcp.CURRENT, fcp.START_POINT),
-                fcp.Coincident(fcp.CURRENT, fcp.END_POINT,
-                               e1, fcp.START_POINT),
-                fcp.Distance(fcp.CURRENT, 14)
+                fcp.Coincident(e1, fcp.START_POINT, fcp.CURRENT, fcp.END_POINT)
             ])
-        print("externals=%s" % (str(externals)))
-        diag1 = self.addG(
-            fcp.Line(-1, -1, 0, 0),
-            construction=True,
-            constraints=[
-                fcp.Coincident(externals[0], fcp.START_POINT,
-                               fcp.CURRENT, fcp.START_POINT),
-                fcp.Coincident(e1, fcp.START_POINT,
-                               fcp.CURRENT, fcp.END_POINT)
-            ])
-        diag2 = self.addG(
-            fcp.Line(2, 2, 1, 1),
-            construction=True,
-            constraints=[
-                fcp.Coincident(externals[1], secondFaceEdgeVertexSel,
-                               fcp.CURRENT, fcp.START_POINT),
-                fcp.Coincident(e3, fcp.START_POINT,
-                               fcp.CURRENT, fcp.END_POINT),
-                fcp.PointOnObject(e1, fcp.START_POINT, fcp.CURRENT),
-                fcp.Equal(diag1, fcp.CURRENT),
-                fcp.Parallel(diag1, fcp.CURRENT)
-            ])
+        self.addC(fcp.Equal(e1, e2))
+        self.addC(fcp.Distance(e1, 14))
+        self.addC(fcp.Symmetric(e1, fcp.START_POINT, e2, fcp.END_POINT,
+                                fcp.X_AXIS, fcp.START_POINT))
 
 
 def punchHole(body, face):
@@ -110,17 +79,13 @@ def punchHole(body, face):
     while body.Shape.Faces[faceIdx].CenterOfMass != face.CenterOfMass:
         print(faceIdx)
         faceIdx += 1
-    support = (body.Tip, ['Face' + str(faceIdx + 1)])
-    print(support)
-    square = SwitchHole(body, support, face)
+    square = SwitchHole(body, face)
     hole = body.newObject('PartDesign::Pocket', square.name + 'Pocket')
     square.sketch.Visibility = False
     hole.Profile = square.sketch
-    hole.Length = 5.000000
-    hole.Length2 = 100.000000
+    hole.Midplane = 1
     hole.Type = 1
     hole.UpToFace = None
-    pass
 
 
 [selectedBody] = Gui.Selection.getCompleteSelection()
