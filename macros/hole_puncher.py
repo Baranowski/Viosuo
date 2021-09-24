@@ -74,10 +74,8 @@ class SwitchHole(fcp.Sketch):
 
 
 def punchHole(body, face):
-    print(face)
     faceIdx = 0
     while body.Shape.Faces[faceIdx].CenterOfMass != face.CenterOfMass:
-        print(faceIdx)
         faceIdx += 1
     square = SwitchHole(body, face)
     hole = body.newObject('PartDesign::Pocket', square.name + 'Pocket')
@@ -93,7 +91,6 @@ keepPunching = True
 while keepPunching:
     keepPunching = False
     for f in selectedBody.Shape.Faces:
-        print(f)
         # Only punching in faces with exactly 4 edges
         if len(f.Edges) != 4:
             continue
