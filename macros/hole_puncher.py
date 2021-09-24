@@ -50,28 +50,24 @@ class SwitchHole(fcp.Sketch):
         externals = [self.addE(body, 'Edge' + str(i + 1))
                      for i in externalIdxs]
         e1 = self.addG(
-            fcp.Line(-100, -100, 100, -100),
+            fcp.Line(-10000, -10000, 10000, -10000),
             construction=False)
         e2 = self.addG(
-            fcp.Line(100, -100, 100, 100),
+            fcp.Line(10000, -10000, 10000, 10000),
             construction=False,
             constraints=[
                 fcp.Coincident(e1, fcp.END_POINT,
                                fcp.CURRENT, fcp.START_POINT),
-                fcp.Perpendicular(e1, fcp.CURRENT),
-                fcp.Equal(e1, fcp.CURRENT)
             ])
         e3 = self.addG(
-            fcp.Line(100, 100, -100, 100),
+            fcp.Line(10000, 10000, -10000, 10000),
             construction=False,
             constraints=[
                 fcp.Coincident(e2, fcp.END_POINT,
                                fcp.CURRENT, fcp.START_POINT),
-                fcp.Perpendicular(e2, fcp.CURRENT),
-                fcp.Equal(e2, fcp.CURRENT)
             ])
         e4 = self.addG(
-            fcp.Line(-100, 100, -100, -100),
+            fcp.Line(-10000, 10000, -10000, -10000),
             construction=False,
             constraints=[
                 fcp.Coincident(e3, fcp.END_POINT,
@@ -80,6 +76,27 @@ class SwitchHole(fcp.Sketch):
                                e1, fcp.START_POINT),
                 fcp.Distance(fcp.CURRENT, 14)
             ])
+        d1 = self.addG(
+            fcp.Line(-10000, -10000, 10000, 10000),
+            construction=True,
+            constraints=[
+                fcp.Coincident(e1, fcp.START_POINT,
+                               fcp.CURRENT, fcp.START_POINT),
+                fcp.Coincident(e3, fcp.START_POINT,
+                               fcp.CURRENT, fcp.END_POINT)
+            ])
+        d2 = self.addG(
+            fcp.Line(10000, -10000, -10000, 10000),
+            construction=True,
+            constraints=[
+                fcp.Coincident(e2, fcp.START_POINT,
+                               fcp.CURRENT, fcp.START_POINT),
+                fcp.Coincident(e4, fcp.START_POINT,
+                               fcp.CURRENT, fcp.END_POINT),
+                fcp.Perpendicular(d1, fcp.CURRENT),
+                fcp.Equal(d1, fcp.CURRENT)
+            ])
+
         print("externals=%s" % (str(externals)))
         diag1 = self.addG(
             fcp.Line(-1, -1, 0, 0),
@@ -117,7 +134,7 @@ def punchHole(body, face):
     square.sketch.Visibility = False
     hole.Profile = square.sketch
     hole.Length = 5.000000
-    hole.Length2 = 100.000000
+    hole.Length2 = 10000.000000
     hole.Type = 1
     hole.UpToFace = None
     pass
