@@ -82,7 +82,9 @@ def punchHole(body, face):
     square.sketch.Visibility = False
     hole.Profile = square.sketch
     hole.Midplane = 1
-    hole.Type = 1
+    hole.Type = 4
+    hole.Length = 5.00
+    hole.Length2 = 5.00
     hole.UpToFace = None
 
 
