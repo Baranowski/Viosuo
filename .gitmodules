@@ -1,0 +1,4 @@
+[submodule "zmk"]
+	branch = viosuo
+	path = zmk
+	url = https://github.com/Baranowski/zmk
