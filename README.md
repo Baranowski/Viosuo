@@ -12,6 +12,13 @@ concept.**
 
 ![One side removed](img/20220321_0024.png?raw=true "One side removed")
 
+
+Demo
+====
+
+Video demo of typing: [https://youtu.be/d8-P9P5Dz6U](https://youtu.be/d8-P9P5Dz6U)
+
+
 What's this?
 ============
 
