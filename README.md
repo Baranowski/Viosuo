@@ -66,6 +66,83 @@ create but I'm too lazy to do it myself. I'm including this here since
 with a keymap and all the necessary boilerplate for Viosuo added.
 
 
+How to build one
+================
+
+
+Printing suggestions
+--------------------
+
+I used Ultimaker Cura for slicer and printed on Ender 3. Support structure was Tree. Every part was
+printed with a Brim for adhesion.
+
+* The Sleeve was printed vertically
+* The Connector was printed horizontally, with almost all of its body resting on
+  the support structure
+* The Palm was printed flat, without any additional rotation. You might have to
+  fiddle with the support structure's settings and slowly carefully preview the
+  generated gcode to make sure that every hole has enough support.
+* The Cover is optional. I printed it upside-down
+* The Travel\_bottom and Travel\_top should not be needed at all - I designed
+  them quickly when I had to travel and throw my keyboard into a suitcase.
+
+
+Additional materials
+--------------------
+
+* M5x40 screws and M5 nuts (4x)
+* Some kind of elastic sleeve to strap the keyboard to your forearm - I used
+  football calf compression socks for boys: https://www.emag.ro/set-1-1-jampieri-rucanor-pentru-baieti-rosu-796830/pd/DFV01TMBM/
+* nice!nano (2x): https://nicekeyboards.com/nice-nano/
+* Mill Max Low Profile Sockets (2 pairs) - optional if you want to connect your
+  nice!nanos somehow else
+* batteries (2x) - See the nice!nano page for requirements; I used some no-name: https://www.emag.ro/acumulator-li-po-3-7v-400mah-2-fire-1337/pd/DW87YGBBM/
+* 1N4148 diodes (68x)
+* XDA keycaps (68x)
+* MX-compatible switches (68x) - I used gateron greens
+* wires
+* heat-shrink tubes
+
+
+Wiring
+------
+
+Here are some pictures of the left-hand side's wiring. Please note that I have
+soldered sockets to the nice!nano upside-down. There is a very simple reason for
+that: I made a mistake.
+
+![wiring01](img/wiring01.png?raw=true "wiring01")
+
+![wiring02](img/wiring02.png?raw=true "wiring02")
+
+![wiring03](img/wiring03.png?raw=true "wiring03")
+
+In the pictures above each wire responsible for a column (i.e., set of keys
+operated by a single finger) ends with a black heat-shrink tube. Every row-wire
+ends with a red heat-shrink tube. The thumb cluster is treated as another row
+but this one ends with a yellow heat-shrink tube.
+
+In order to plug the wires into the Mill Max sockets soldered to nice!nanos I
+did the following:
+
+1. Put the heat-shrink tube on each of the wires
+1. Gather the diode legs cut off while soldering the keyboard
+2. Solder one to the chip-facing end of each of the wires
+3. Bend the end of each of those legs at a right angle. The length of the bent
+   piece should be such that it fits into the socket but doesn't stick out much.
+4. Slide the heat-shrink tube all the way towards the bent part and apply heat.
+   That way the wires should not short when they are plugged in next to each
+   other.
+
+
+Sleeve
+------
+
+I simply put the 3D-printed "Sleeve" part into my textile sleeves, cut out the
+holes for the protruding elements and then stabled the surrounding area of the
+textile sleeve so that the holes do not rip.
+
+
 License
 =======
 
