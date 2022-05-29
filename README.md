@@ -1,10 +1,8 @@
-**Note: This repo has not been cleaned up and prepared for general consumption
-at all. This is just a dump of the project files. If there is any
-interest I will be happy to clean it up, put up some instructions on how to
-customize, print and build this keyboard. I'm not sure how useful that would be
-though. The keyboard has been adjusted to my hand and probably
+**Note: This is mostly a dump of the project files with very scant instructions.
+The keyboard has been adjusted to my hand and probably
 wouldn't serve well anyone else. So at this point it's basically a proof of
-concept.**
+concept. However, if someone wants to play with this idea I will be happy to
+help if I can.**
 
 ![Wearing both sides](img/20220321_0020.png?raw=true "Wearing both sides")
 
@@ -90,7 +88,7 @@ printed with a Brim for adhesion.
 Additional materials
 --------------------
 
-* M5x40 screws and M5 nuts (4x)
+* M5x40 bolts and M5 nuts (4x)
 * Some kind of elastic sleeve to strap the keyboard to your forearm - I used
   football calf compression socks for boys: https://www.emag.ro/set-1-1-jampieri-rucanor-pentru-baieti-rosu-796830/pd/DFV01TMBM/
 * nice!nano (2x): https://nicekeyboards.com/nice-nano/
@@ -164,6 +162,60 @@ firmware are:
 
     west build -d build/left -b nice_nano -- -DSHIELD=viosuo_left
     west build -d build/right -b nice_nano -- -DSHIELD=viosuo_right
+
+
+TODO improvements
+=================
+
+Separate columns
+----------------
+
+It would be much better if each column (i.e., a set of keys operated by a single
+finger) could be printed separately and then they could be joined together by a
+couple long bolts. The longer bolts would replace the currently used M5x40 (I
+used M5x40 simply because that's what I had at hand). That way you could iterate
+much faster while experimenting with variations in the keys layout. I haven't
+yet figured out how the thumb cluster could be attached in a similar way.
+
+Software for desigining columns
+-------------------------------
+
+One thing I love about Dactyl-Manuform is how customizable the design is, thanks
+to the scripts that generate STL files for any reasonable parameters chosen by
+the builder.
+
+It should be possible to write similar software for Viosuo's columns. This again
+would make it much faster to iterate on the layout and would allow more people
+to adjust the keyboard to their hands.
+
+Angles between keys and protruding keys
+---------------------------------------
+
+The angle between the 3rd and 4th row (counting from the palm) is too flat - I
+often confuse the two rows. A sharper angle would be more practical. Perhaps
+they keys of the 3rd row should protrude, similarly to how the top keys on the
+pinky column protrude. Unfortunately, I came up with the idea of protruding keys
+quite late in the game when I didn't want to fiddle with the arrangement of the
+3 main columns. The above idea of separately-printable columns would have helped
+with that.
+
+Cover attachment
+----------------
+
+The cover seems to be necessary - without it the electronic components catch
+very easily on clothing. However, the method of attaching the cover should be
+smarter - currently it's really a hassle because the bolts joining all the
+elements together are quite deep underneath the cover.
+
+Comfort in different positions
+----------------------------
+
+Currently I find the keyboard very comfortable when standing or walking but I
+choose to take it off whenever I want to sit down. A better design would allow
+to comfortably rest the keyboard in your laps and on or underneath a desk. 
+
+I believe this should be pretty easy to do with modifications to the "Connector"
+part. Perhaps the hook on the "Sleeve" part would also have to be reversed.
 
 License
 =======
