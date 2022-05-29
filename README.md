@@ -80,7 +80,7 @@ printed with a Brim for adhesion.
 * The Connector was printed horizontally, with almost all of its body resting on
   the support structure
 * The Palm was printed flat, without any additional rotation. You might have to
-  fiddle with the support structure's settings and slowly carefully preview the
+  fiddle with the support structure's settings and carefully preview the
   generated gcode to make sure that every hole has enough support.
 * The Cover is optional. I printed it upside-down
 * The Travel\_bottom and Travel\_top should not be needed at all - I designed
@@ -139,9 +139,31 @@ Sleeve
 ------
 
 I simply put the 3D-printed "Sleeve" part into my textile sleeves, cut out the
-holes for the protruding elements and then stabled the surrounding area of the
+holes for the protruding elements and then stapled (with an office stapler) the surrounding area of the
 textile sleeve so that the holes do not rip.
 
+
+Building firmware
+-----------------
+
+I used ZMK firmware. My patches live in this repo as the 'zmk' submodule. In
+order to clone this repo together with the firmware run either
+
+    git clone --recursive https://github.com/Baranowski/Viosuo
+
+or
+
+    git clone https://github.com/Baranowski/Viosuo
+    cd Viosuo
+    git submodule update --init --recursive
+
+Then you can follow the standard zmk building instructions: https://zmk.dev/docs/development/build-flash
+
+The name of the shield is viosuo and so the specific commands to build this
+firmware are:
+
+    west build -d build/left -b nice_nano -- -DSHIELD=viosuo_left
+    west build -d build/right -b nice_nano -- -DSHIELD=viosuo_right
 
 License
 =======
