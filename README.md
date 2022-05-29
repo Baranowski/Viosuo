@@ -126,7 +126,7 @@ did the following:
 1. Put the heat-shrink tube on each of the wires
 1. Gather the diode legs cut off while soldering the keyboard
 2. Solder one to the chip-facing end of each of the wires
-3. Bend the end of each of those legs at a right angle. The length of the bent
+3. Bend the end of each of those legs at the right angle. The length of the bent
    piece should be such that it fits into the socket but doesn't stick out much.
 4. Slide the heat-shrink tube all the way towards the bent part and apply heat.
    That way the wires should not short when they are plugged in next to each
